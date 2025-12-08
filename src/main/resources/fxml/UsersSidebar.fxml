@@ -1,0 +1,19 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox fx:id="usersContainer" 
+      xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      styleClass="users-sidebar"
+      prefWidth="200.0">
+    <Label text="Users" styleClass="sidebar-header">
+        <padding>
+            <Insets top="10" right="10" bottom="10" left="10"/>
+        </padding>
+    </Label>
+    <ListView fx:id="usersList" VBox.vgrow="ALWAYS" styleClass="users-list"/>
+</VBox>

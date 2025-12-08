@@ -1,0 +1,57 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.codesphere.controllers.CodeEditorController"
+            stylesheets="/styles/code-editor.css"
+            prefHeight="600.0" prefWidth="800.0">
+    <top>
+        <VBox spacing="5">
+            <HBox spacing="10" alignment="CENTER_LEFT" styleClass="editor-toolbar">
+                <Label text="Language:"/>
+                <ComboBox fx:id="languageSelector" styleClass="language-selector"/>
+                <Region HBox.hgrow="ALWAYS" />
+                <Button text="Run Code" onAction="#executeCode" styleClass="run-button">
+                    <graphic>
+                        <Region styleClass="run-icon"/>
+                    </graphic>
+                </Button>
+                <Label fx:id="collaborationStatusLabel" text="Not connected" styleClass="status-label"/>
+                <padding>
+                    <Insets top="5" right="10" bottom="5" left="10"/>
+                </padding>
+            </HBox>
+            <HBox fx:id="activeCursorsContainer" spacing="5" styleClass="cursors-container">
+                <padding>
+                    <Insets top="2" right="10" bottom="2" left="10"/>
+                </padding>
+            </HBox>
+        </VBox>
+    </top>
+    <center>
+        <BorderPane fx:id="codeEditorContainer" styleClass="code-editor-container">
+            <padding>
+                <Insets top="5" right="5" bottom="5" left="5"/>
+            </padding>
+        </BorderPane>
+    </center>
+    <bottom>
+        <VBox styleClass="output-container">
+            <Label text="Output:" styleClass="output-label">
+                <padding>
+                    <Insets top="2" left="5" />
+                </padding>
+            </Label>
+            <TextArea fx:id="outputArea" editable="false" wrapText="true" styleClass="output-text-area" prefHeight="120.0">
+                <VBox.margin>
+                    <Insets top="2" right="5" bottom="5" left="5"/>
+                </VBox.margin>
+            </TextArea>
+        </VBox>
+    </bottom>
+</BorderPane>

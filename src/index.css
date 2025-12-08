@@ -1,0 +1,172 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+
+    --card: 224 71% 4%;
+    --card-foreground: 213 31% 91%;
+
+    --popover: 224 71% 4%;
+    --popover-foreground: 215 20.2% 65.1%;
+
+    --primary: 210 100% 52%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 222 47% 11%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 223 47% 20%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 216 34% 17%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 216 34% 17%;
+    --input: 216 34% 17%;
+    --ring: 224 76% 48%;
+
+    --radius: 0.5rem;
+
+    /* Editor colors for dark theme */
+    --editor-background: #1A1F2C;
+    --editor-text: #F6F6F7;
+    --editor-comment: #8A898C;
+    --editor-keyword: #8B5CF6;
+    --editor-string: #0EA5E9;
+    --editor-variable: #F97316;
+    --editor-function: #D946EF;
+    --editor-operator: #C8C8C9;
+    --editor-lineNumber: #555555;
+    --editor-activeLineBackground: #222222;
+    --editor-cursor: #FFFFFF;
+  }
+
+  .light {
+    --background: 0 0% 100%;
+    --foreground: 270 15% 15%;
+
+    --card: 0 0% 98%;
+    --card-foreground: 270 15% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 270 15% 15%;
+
+    --primary: 262 83% 58%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 270 20% 95%;
+    --secondary-foreground: 270 15% 25%;
+
+    --muted: 270 20% 95%;
+    --muted-foreground: 270 10% 45%;
+
+    --accent: 262 50% 95%;
+    --accent-foreground: 270 15% 25%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 270 20% 90%;
+    --input: 270 20% 90%;
+    --ring: 262 83% 58%;
+
+    --radius: 0.5rem;
+
+    /* Editor colors for light theme */
+    --editor-background: #FEFEFE;
+    --editor-text: #2D1B69;
+    --editor-comment: #8B5A9F;
+    --editor-keyword: #7C3AED;
+    --editor-string: #9333EA;
+    --editor-variable: #A855F7;
+    --editor-function: #8B5CF6;
+    --editor-operator: #6B46C1;
+    --editor-lineNumber: #C4B5FD;
+    --editor-activeLineBackground: #F3F4F6;
+    --editor-cursor: #000000;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+.editor-line-numbers {
+  @apply text-sm font-mono pr-4 text-right select-none border-r;
+  color: var(--editor-lineNumber);
+  border-color: var(--editor-lineNumber);
+  opacity: 0.3;
+}
+
+.editor-line {
+  @apply font-mono flex;
+  color: var(--editor-text);
+}
+
+.editor-line-active {
+  background-color: var(--editor-activeLineBackground);
+}
+
+.editor-cursor {
+  @apply w-[2px] h-5 relative inline-block align-middle animate-cursor-blink;
+  background-color: var(--editor-cursor);
+}
+
+.editor-keyword, .token-keyword {
+  color: var(--editor-keyword);
+}
+
+.editor-string, .token-string {
+  color: var(--editor-string);
+}
+
+.editor-comment, .token-comment {
+  color: var(--editor-comment);
+}
+
+.editor-function, .token-function {
+  color: var(--editor-function);
+}
+
+.editor-variable, .token-variable {
+  color: var(--editor-variable);
+}
+
+.editor-operator, .token-operator {
+  color: var(--editor-operator);
+}
+
+.whiteboard-canvas {
+  @apply bg-white rounded-md;
+}
+
+.whiteboard-toolbox {
+  @apply absolute top-4 left-4 bg-background/90 rounded-md p-2 flex flex-col gap-2 border border-border shadow-md;
+}
+
+.presence-indicator {
+  @apply w-2 h-2 rounded-full bg-green-500;
+}
+
+.remote-cursor {
+  @apply absolute w-[2px] h-5 z-10;
+}
+
+.remote-cursor-label {
+  @apply absolute text-xs px-1 py-0.5 text-white rounded-sm -top-5 whitespace-nowrap;
+}

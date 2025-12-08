@@ -1,0 +1,15 @@
+
+.canvas-container {
+    -fx-background-color: white;
+}
+
+.whiteboard-toolbox {
+    -fx-background-color: #f9fafb;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: #e5e7eb;
+}
+
+.tool-button {
+    -fx-padding: 5px;
+    -fx-min-width: 80px;
+}

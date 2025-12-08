@@ -1,0 +1,37 @@
+
+.root {
+    -fx-background-color: #f3f4f6;
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+}
+
+.tab-pane {
+    -fx-background-color: white;
+    -fx-border-color: #e5e7eb;
+}
+
+.sidebar-header {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.users-sidebar {
+    -fx-background-color: white;
+    -fx-border-width: 0 1 0 0;
+    -fx-border-color: #e5e7eb;
+}
+
+.chat-sidebar {
+    -fx-background-color: white;
+    -fx-border-width: 0 0 0 1;
+    -fx-border-color: #e5e7eb;
+}
+
+.messages-list, .users-list {
+    -fx-background-color: white;
+}
+
+.message-input-container {
+    -fx-border-width: 1 0 0 0;
+    -fx-border-color: #e5e7eb;
+    -fx-padding: 10px;
+}
