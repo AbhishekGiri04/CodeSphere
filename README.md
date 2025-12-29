@@ -140,7 +140,6 @@ CodeSphere is a comprehensive collaborative coding platform designed for modern 
   </tr>
   <tr>
     <td><img src="docs/DarkMode.png" alt="Dark Mode" width="400"/><br/><b>Dark Mode Interface</b></td>
-    <td><img src="docs/CodeSection.png" alt="Code Editor" width="400"/><br/><b>Code Editor</b></td>
   </tr>
 </table>
 
@@ -243,7 +242,8 @@ CodeSphere/
 ├── 📄 index.html                    # 🌐 HTML template
 ├── 📄 run.sh                        # 🌐 Web application startup
 ├── 📄 start-swing.sh                # 🖥️ Desktop application startup
-├── 📄 .env.example                  # 🔐 Environment variables template
+├── 📄 .env                          # 🔐 Environment variables (local)
+├── 📄 .env.example                  # 🔧 Environment variables template
 ├── 📄 .gitignore                    # 🚫 Git ignore rules
 └── 📄 README.md                     # 📖 Project documentation
 ```
