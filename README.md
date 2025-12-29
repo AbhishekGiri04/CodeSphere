@@ -140,7 +140,7 @@ CodeSphere is a comprehensive collaborative coding platform designed for modern 
   </tr>
   <tr>
     <td><img src="docs/DarkMode.png" alt="Dark Mode" width="400"/><br/><b>Dark Mode Interface</b></td>
-    <td><img src="docs/Desktop_CodeSphere.png" alt="Desktop App" width="400"/><br/><b>Desktop Application</b></td>
+    <td><img src="docs/CodeSection.png" alt="Code Editor" width="400"/><br/><b>Code Editor</b></td>
   </tr>
 </table>
 
