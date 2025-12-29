@@ -1,62 +1,48 @@
 #!/bin/bash
 
-echo "🚀 Starting CodeSphere..."
+echo "🚀 CodeSphere - Web Application Startup"
+echo "========================================"
+echo ""
 
-# Kill existing processes
-echo "🧹 Cleaning up existing processes..."
-lsof -ti:3001,8080 | xargs kill -9 2>/dev/null || true
-sleep 1
+# Check if Node.js is installed
+if ! command -v node &> /dev/null; then
+    echo "❌ Node.js is not installed. Please install Node.js first."
+    exit 1
+fi
 
-# Start backend server
-echo "📡 Starting backend server..."
+# Check if npm is installed
+if ! command -v npm &> /dev/null; then
+    echo "❌ npm is not installed. Please install npm first."
+    exit 1
+fi
+
+echo "📦 Installing frontend dependencies..."
+npm install
+
+echo ""
+echo "📦 Installing server dependencies..."
 cd server
-npm start > ../backend.log 2>&1 &
-BACKEND_PID=$!
+npm install
 cd ..
 
-# Wait and check backend
-echo "⏳ Waiting for backend to start..."
-sleep 4
-if ! curl -s http://localhost:3001 > /dev/null 2>&1; then
-    echo "❌ Backend failed to start. Check backend.log"
-    cat backend.log
-    exit 1
-fi
-echo "✅ Backend started successfully"
+echo ""
+echo "🌐 Starting CodeSphere Web Application..."
+echo "Frontend: http://localhost:8080"
+echo "Backend:  http://localhost:3001"
+echo ""
 
-# Start frontend
-echo "🎨 Starting frontend..."
-npm run dev > frontend.log 2>&1 &
+# Start both frontend and backend
+npm run dev &
 FRONTEND_PID=$!
 
-# Wait and check frontend
-echo "⏳ Waiting for frontend to start..."
-sleep 5
-if ! curl -s http://localhost:8080 > /dev/null 2>&1; then
-    echo "❌ Frontend failed to start. Check frontend.log"
-    cat frontend.log
-    exit 1
-fi
-echo "✅ Frontend started successfully"
+cd server
+npm start &
+SERVER_PID=$!
 
-# Open in Chrome
-echo "🌐 Opening in Chrome..."
-open -a "Google Chrome" http://localhost:8080
+echo "✅ Both servers started successfully!"
+echo "Press Ctrl+C to stop all servers"
 
-echo "✅ CodeSphere is running!"
-echo "📡 Backend: http://localhost:3001"
-echo "🎨 Frontend: http://localhost:8080"
-echo ""
-echo "Press Ctrl+C to stop both servers"
+# Wait for user interrupt
+trap "echo ''; echo '🛑 Stopping servers...'; kill $FRONTEND_PID $SERVER_PID 2>/dev/null; exit 0" INT
 
-# Cleanup function
-cleanup() {
-    echo "\n🛑 Stopping servers..."
-    kill $BACKEND_PID $FRONTEND_PID 2>/dev/null
-    exit 0
-}
-
-trap cleanup SIGINT
-
-# Wait for user to stop
 wait

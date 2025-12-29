@@ -9,41 +9,49 @@
   <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white"/>
   <img src="https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white"/>
   <img src="https://img.shields.io/badge/Socket.io-black?style=for-the-badge&logo=socket.io&badgeColor=010101"/>
+  <img src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=java&logoColor=white"/>
   <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white"/>
 </p>
 <br>
 
 ---
 
-## 📖 Problem Statement
-Remote development teams struggle with effective collaboration, lack of real-time code synchronization, difficulty in explaining complex code concepts visually, and inefficient pair programming sessions without proper tools for seamless teamwork in modern software development.
+## 📖 Project Overview
+CodeSphere is a comprehensive collaborative coding platform designed for modern development teams. It combines real-time code editing, visual collaboration tools, and instant code execution in both web and desktop environments. Built with React and Java Swing, it provides seamless collaboration experiences for remote teams, coding interviews, and educational purposes.
 
 <br>
 
 ---
 
-## 💡 Our Solution
-CodeSphere is a full-stack collaborative coding platform built to:
+## 💡 Key Features
 
-- 👥 Enable real-time collaborative editing with live cursors and presence indicators
-- 🎨 Provide interactive whiteboard for visual code explanations and diagrams
-- ⚡ Execute code instantly with multi-language support (Java, Python, JavaScript)
-- 💬 Facilitate seamless team communication with built-in chat system
-- 🏠 Create room-based sessions with unique codes for organized collaboration
+- 👥 **Real-time Collaboration** — Live code editing with cursor tracking and user presence
+- 🎨 **Interactive Whiteboard** — Visual explanations with drawing tools and shapes
+- ⚡ **Multi-language Execution** — Instant code compilation for Java, Python, JavaScript, C++
+- 💬 **Team Chat System** — Built-in messaging with @mentions and notifications
+- 🏠 **Room Management** — Unique session codes for organized collaboration
+- 🖥️ **Dual Platform** — Web application and desktop Java Swing version
+- 🔐 **Secure Authentication** — Firebase-powered user management
+- 📱 **Responsive Design** — Optimized for desktop, tablet, and mobile devices
+- 🎯 **Professional UI** — Monaco Editor with VS Code-like experience
+- 🔄 **Real-time Sync** — Instant synchronization across all connected users
+
 <br>
 
 ---  
 
-## 🚀 Features
+## 🚀 Live Demo
 
-✅  **Real-time collaborative editing** with Monaco Editor and live synchronization  
-✅  **Interactive whiteboard** with drawing tools using Fabric.js for visual explanations  
-✅  **Multi-language code execution** supporting Java, Python, JavaScript with instant feedback  
-✅  **Live chat system** with real-time messaging and user presence indicators  
-✅  **Room-based architecture** with unique session codes for organized collaboration  
-✅  **Modern responsive design** with dark/light theme support and professional UI  
-✅  **Production-ready backend** with Socket.IO and comprehensive error handling
+✅  **Web Application** — Experience CodeSphere in your browser  
+✅  **Desktop Version** — Full-featured Java Swing application  
+✅  **Real-time Collaboration** — Multi-user editing and whiteboard  
+✅  **Code Execution** — Live compiler for multiple programming languages  
+✅  **Room-based Sessions** — Organized collaboration with unique codes  
+✅  **Cross-platform** — Works on Windows, macOS, and Linux  
+✅  **Professional Tools** — Monaco Editor with syntax highlighting  
+✅  **Visual Collaboration** — Interactive whiteboard with drawing tools  
+✅  **Team Communication** — Built-in chat with user presence  
+✅  **Secure & Fast** — Firebase authentication and optimized performance
 
 <br>
 
@@ -63,7 +71,7 @@ CodeSphere is a full-stack collaborative coding platform built to:
 <tbody>
 <tr>
 <td><img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB"/></td>
-<td>Modern frontend with component architecture</td>
+<td>Modern frontend with component architecture and hooks</td>
 </tr>
 <tr>
 <td><img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white"/></td>
@@ -78,12 +86,20 @@ CodeSphere is a full-stack collaborative coding platform built to:
 <td>Real-time bidirectional communication for collaboration</td>
 </tr>
 <tr>
+<td><img src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=java&logoColor=white"/></td>
+<td>Desktop application with Swing UI and real compiler</td>
+</tr>
+<tr>
 <td><img src="https://img.shields.io/badge/Monaco_Editor-0078D4?style=for-the-badge&logo=visual-studio-code&logoColor=white"/></td>
 <td>VS Code engine for professional code editing experience</td>
 </tr>
 <tr>
 <td><img src="https://img.shields.io/badge/Fabric.js-FF6B6B?style=for-the-badge&logo=javascript&logoColor=white"/></td>
 <td>Canvas library for interactive whiteboard functionality</td>
+</tr>
+<tr>
+<td><img src="https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black"/></td>
+<td>Authentication, real-time database, and hosting</td>
 </tr>
 <tr>
 <td><img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white"/></td>
@@ -102,100 +118,147 @@ CodeSphere is a full-stack collaborative coding platform built to:
 
 ---
 
-## 📁 Project Directory Structure
+## 📸 Application Screenshots
+
+### Web Application Interface
+<table>
+  <tr>
+    <td><img src="docs/LoadingPage.png" alt="Loading Screen" width="400"/><br/><b>Loading Screen</b></td>
+    <td><img src="docs/SignIn.png" alt="Sign In" width="400"/><br/><b>Sign In Page</b></td>
+  </tr>
+  <tr>
+    <td><img src="docs/HomePage.png" alt="Home Page" width="400"/><br/><b>Home Page</b></td>
+    <td><img src="docs/CodeSection.png" alt="Code Editor" width="400"/><br/><b>Code Editor</b></td>
+  </tr>
+</table>
+
+### Collaboration & Features
+<table>
+  <tr>
+    <td><img src="docs/Web_WhiteBoard.png" alt="Web Whiteboard" width="400"/><br/><b>Web Whiteboard</b></td>
+    <td><img src="docs/Terminal.png" alt="Code Terminal" width="400"/><br/><b>Code Execution Terminal</b></td>
+  </tr>
+  <tr>
+    <td><img src="docs/DarkMode.png" alt="Dark Mode" width="400"/><br/><b>Dark Mode Interface</b></td>
+    <td><img src="docs/Desktop_CodeSphere.png" alt="Desktop App" width="400"/><br/><b>Desktop Application</b></td>
+  </tr>
+</table>
+
+### Desktop Application
+<table>
+  <tr>
+    <td><img src="docs/Desktop_WhiteBoard.png" alt="Desktop Whiteboard" width="400"/><br/><b>Desktop Whiteboard</b></td>
+    <td><img src="docs/Desktop_CodeSphere.png" alt="Desktop Code Editor" width="400"/><br/><b>Desktop Code Editor</b></td>
+  </tr>
+</table>
+
+## 📁 Project Structure
 
 ```
 CodeSphere/
-├── 📂 src/                         # 🎨 React frontend application
-│   ├── 📂 components/              # 🧩 Reusable UI components
-│   │   ├── 📂 ui/                  # 🎯 shadcn/ui component library (50+ components)
-│   │   ├── 📄 ChatSidebar.tsx      # 💬 Real-time chat interface
-│   │   ├── 📄 CodeEditor.tsx       # 💻 Basic code editor wrapper
-│   │   ├── 📄 MonacoCodeEditor.tsx # 🔧 Advanced Monaco integration
-│   │   ├── 📄 ProfessionalCodeEditor.tsx # 🚀 Professional editor interface
-│   │   ├── 📄 Whiteboard.tsx       # 🎨 Canvas drawing component
-│   │   ├── 📄 RealWhiteboard.tsx   # ✨ Enhanced whiteboard features
-│   │   ├── 📄 UsersSidebar.tsx     # 👥 User presence management
-│   │   ├── 📄 EditorToolbar.tsx    # 🛠️ Editor controls and tools
-│   │   ├── 📄 LoadingScreen.tsx    # ⏳ Professional loading screen
-│   │   ├── 📄 ThemeProvider.tsx    # 🌙 Dark/light theme management
-│   │   ├── 📄 ThemeToggle.tsx      # 🔄 Theme switching component
-│   │   └── 📄 CodeLine.tsx         # 📝 Code line component
-│   ├── 📂 contexts/                # 🔄 React context providers
-│   │   ├── 📄 CollaborationContext.tsx # 👥 Real-time collaboration state
-│   │   ├── 📄 RealCollaborationContext.tsx # 🚀 Enhanced collaboration
-│   │   ├── 📄 EditorContext.tsx    # 💻 Code editor state management
-│   │   └── 📄 UserContext.tsx      # 👤 User authentication and data
-│   ├── 📂 hooks/                   # 🎣 Custom React hooks
-│   │   ├── 📄 useSocket.ts         # 🔌 Socket.IO connection management
-│   │   ├── 📄 use-toast.ts         # 🔔 Toast notification system
-│   │   └── 📄 use-mobile.tsx       # 📱 Mobile responsiveness detection
-│   ├── 📂 pages/                   # 📄 Main application pages
-│   │   ├── 📄 Index.tsx            # 🏠 Landing and room creation page
-│   │   ├── 📄 Room.tsx             # 🏠 Collaborative coding workspace
-│   │   └── 📄 NotFound.tsx         # 🚫 404 error page
-│   ├── 📂 lib/                     # 🛠️ Utility functions
-│   │   └── 📄 utils.ts             # 🔧 Helper functions and utilities
-│   ├── 📄 App.tsx                  # 🔄 Main React application component
-│   ├── 📄 App.css                  # 🎨 Global styles
-│   ├── 📄 index.css                # 🎨 Root styles
-│   ├── 📄 main.tsx                 # 🚀 Application entry point
-│   └── 📄 vite-env.d.ts            # 📝 Vite type definitions
-├── 📂 server/                      # 🔧 Node.js backend service
-│   ├── 📂 temp/                    # 📁 Temporary code execution files
-│   │   ├── 📄 Main.java            # ☕ Java code execution template
-│   │   └── 📄 Main.class           # 📦 Compiled Java bytecode
-│   ├── 📄 index.js                 # 🚀 Main Express server with Socket.IO
-│   ├── 📄 package.json             # 📦 Node.js backend dependencies
-│   └── 📄 package-lock.json        # 🔒 Backend dependency lock file
-├── 📂 public/                      # 🌐 Static assets and resources
-│   ├── 📄 favicon.ico              # 🎯 Website favicon
-│   ├── 📄 placeholder.svg          # 🖼️ Placeholder images
-│   └── 📄 robots.txt               # 🤖 Search engine directives
-├── 📂 docs/                        # 📸 Documentation and screenshots
-│   ├── 📄 Loading_Page.png         # ⏳ Loading screen preview
-│   ├── 📄 Home_Page.png            # 🏠 Home page interface
-│   ├── 📄 Code_Section.png         # 💻 Code editor section
-│   ├── 📄 Compiler_Section.png     # ⚡ Code execution interface
-│   └── 📄 WhiteBoard.png           # 🎨 Whiteboard functionality
-├── 📄 package.json                 # 📦 Frontend dependencies
-├── 📄 package-lock.json            # 🔒 Frontend dependency lock
-├── 📄 vite.config.ts               # ⚙️ Vite configuration
-├── 📄 tsconfig.json                # ⚙️ TypeScript configuration
-├── 📄 tailwind.config.ts           # 🎨 Tailwind CSS configuration
-├── 📄 postcss.config.js            # 🎨 PostCSS configuration
-├── 📄 eslint.config.js             # 📝 ESLint configuration
-├── 📄 components.json              # 🧩 shadcn/ui components config
-├── 📄 vercel.json                  # 🚀 Vercel deployment config
-├── 📄 docker-compose.yml           # 🐳 Docker containerization
-├── 📄 start-servers.sh             # 🚀 Professional startup script
-├── 📄 run.sh                       # ⚡ Quick start script
-├── 📄 .env.example                 # 🔐 Environment variables template
-├── 📄 .gitignore                   # 🚫 Git ignore rules
-└── 📄 README.md                    # 📖 Project documentation
+├── 📂 docs/                         # 📸 Screenshots and documentation
+│   ├── 📄 LoadingPage.png           # ⏳ Loading screen interface
+│   ├── 📄 SignIn.png                # 🔑 Authentication page
+│   ├── 📄 HomePage.png              # 🏠 Home page interface
+│   ├── 📄 CodeSection.png           # 💻 Code editor section
+│   ├── 📄 Web_WhiteBoard.png        # 🎨 Web whiteboard functionality
+│   ├── 📄 Terminal.png              # ⚡ Code execution terminal
+│   ├── 📄 DarkMode.png              # 🌙 Dark mode interface
+│   ├── 📄 Desktop_CodeSphere.png    # 🖥️ Desktop application
+│   └── 📄 Desktop_WhiteBoard.png    # 🎨 Desktop whiteboard
+├── 📂 server/                       # 🔧 Node.js backend service
+│   ├── 📄 index.js                  # 🚀 Express server with Socket.IO
+│   ├── 📄 package.json              # 📦 Server dependencies
+│   └── 📄 package-lock.json         # 🔒 Server dependency lock
+├── 📂 src/                          # 🎨 React frontend application
+│   ├── 📂 components/               # 🧩 Reusable UI components
+│   │   ├── 📂 ui/                   # 🎯 shadcn/ui component library
+│   │   │   ├── 📄 alert.tsx              # 🚨 Alert components
+│   │   │   ├── 📄 button.tsx             # 🔘 Button components
+│   │   │   ├── 📄 card.tsx               # 📋 Card components
+│   │   │   ├── 📄 dialog.tsx             # 💬 Dialog components
+│   │   │   ├── 📄 input.tsx              # 📝 Input components
+│   │   │   ├── 📄 label.tsx              # 🏷️ Label components
+│   │   │   ├── 📄 scroll-area.tsx        # 📜 Scroll area components
+│   │   │   ├── 📄 select.tsx             # 📋 Select components
+│   │   │   ├── 📄 separator.tsx          # ➖ Separator components
+│   │   │   ├── 📄 sheet.tsx              # 📄 Sheet components
+│   │   │   ├── 📄 skeleton.tsx           # 💀 Loading skeleton
+│   │   │   ├── 📄 sonner.tsx             # 🔔 Toast notifications
+│   │   │   ├── 📄 toast.tsx              # 🍞 Toast components
+│   │   │   ├── 📄 toaster.tsx            # 🔔 Toast container
+│   │   │   ├── 📄 toggle.tsx             # 🔄 Toggle components
+│   │   │   └── 📄 tooltip.tsx            # 💡 Tooltip components
+│   │   ├── 📄 AuthScreen.tsx        # 🔑 Authentication interface
+│   │   ├── 📄 ChatSidebar.tsx       # 💬 Real-time chat interface
+│   │   ├── 📄 EditorToolbar.tsx     # 🛠️ Editor controls and tools
+│   │   ├── 📄 FeaturesShowcase.tsx  # ✨ Features demonstration
+│   │   ├── 📄 GoogleAuth.tsx        # 🔐 Google authentication
+│   │   ├── 📄 LoadingScreen.tsx     # ⏳ Professional loading screen
+│   │   ├── 📄 ProfessionalCodeEditor.tsx # 🚀 Monaco editor integration
+│   │   ├── 📄 ProfessionalFooter.tsx # 🔻 Footer component
+│   │   ├── 📄 ProtectedRoute.tsx    # 🛡️ Route protection
+│   │   ├── 📄 RealWhiteboard.tsx    # ✨ Interactive whiteboard
+│   │   ├── 📄 ThemeProvider.tsx     # 🌙 Theme management
+│   │   ├── 📄 ThemeToggle.tsx       # 🌓 Dark/light theme toggle
+│   │   └── 📄 UsersSidebar.tsx      # 👥 User presence management
+│   ├── 📂 contexts/                 # 🔄 React context providers
+│   │   ├── 📄 AuthContext.tsx       # 🔐 Authentication state
+│   │   ├── 📄 CollaborationContext.tsx # 👥 Real-time collaboration
+│   │   ├── 📄 EditorContext.tsx     # 💻 Code editor state
+│   │   └── 📄 UserContext.tsx       # 👤 User data management
+│   ├── 📂 hooks/                    # 🎣 Custom React hooks
+│   │   └── 📄 use-toast.ts          # 🔔 Toast notification system
+│   ├── 📂 lib/                      # 🛠️ Utility functions
+│   │   ├── 📄 firebase.ts           # 🔥 Firebase configuration
+│   │   └── 📄 utils.ts              # 🔧 Helper functions
+│   ├── 📂 main/java/                # ☕ Java desktop application
+│   │   └── 📂 com/codesphere/       # 📦 Java package structure
+│   │       └── 📄 CodeSphereSwing.java # 🖥️ Desktop application
+│   ├── 📂 pages/                    # 📄 Main application pages
+│   │   ├── 📄 Index.tsx             # 🏠 Landing and room creation
+│   │   ├── 📄 Room.tsx              # 🏠 Collaborative workspace
+│   │   └── 📄 NotFound.tsx          # 🚫 404 error page
+│   ├── 📄 App.tsx                   # 🔄 Main React component
+│   ├── 📄 App.css                   # 🎨 Global styles
+│   ├── 📄 index.css                 # 🎨 Base styles
+│   ├── 📄 main.tsx                  # 🚀 Application entry point
+│   └── 📄 vite-env.d.ts             # 🔧 Vite type definitions
+├── 📂 target/                       # 📦 Java compiled classes
+│   ├── 📂 classes/                  # 🏗️ Compiled Java bytecode
+│   ├── 📂 generated-sources/        # 🔄 Generated source files
+│   └── 📂 maven-status/             # 📊 Maven build status
+├── 📄 package.json                  # 📦 Frontend dependencies
+├── 📄 package-lock.json             # 🔒 Dependency lock file
+├── 📄 pom.xml                       # ☕ Maven configuration
+├── 📄 vite.config.ts                # ⚙️ Vite build configuration
+├── 📄 tailwind.config.ts            # 🎨 Tailwind CSS configuration
+├── 📄 components.json               # 🧩 shadcn/ui configuration
+├── 📄 eslint.config.js              # 📏 ESLint configuration
+├── 📄 tsconfig.json                 # 🔧 TypeScript configuration
+├── 📄 tsconfig.app.json             # 🔧 App TypeScript config
+├── 📄 tsconfig.node.json            # 🔧 Node TypeScript config
+├── 📄 postcss.config.js             # 🎨 PostCSS configuration
+├── 📄 vercel.json                   # 🚀 Vercel deployment config
+├── 📄 index.html                    # 🌐 HTML template
+├── 📄 run.sh                        # 🌐 Web application startup
+├── 📄 start-swing.sh                # 🖥️ Desktop application startup
+├── 📄 .env.example                  # 🔐 Environment variables template
+├── 📄 .gitignore                    # 🚫 Git ignore rules
+└── 📄 README.md                     # 📖 Project documentation
 ```
-<br>
-
-## 📸 Preview Images
-
-| 📍 Page / Feature            | 📸 Screenshot                                              |
-|:----------------------------|:-----------------------------------------------------------|
-| Loading Screen              | ![Loading Screen](docs/Loading_Page.png)        |
-| Home Page                   | ![Home Page](docs/Home_Page.png)                   |
-| Code Editor Section         | ![Code Editor](docs/Code_Section.png)          |
-| Code Compiler              | ![Code Compiler](docs/Compiler_Section.png)    |
-| Interactive Whiteboard     | ![Whiteboard](docs/WhiteBoard.png)    |
-
 <br>
 
 ---
 
-## 📦 How to Run
+## 📦 Installation & Setup
 
 ### 📌 Prerequisites
 - ✅ **Node.js 16+** installed
-- ✅ **npm or yarn** package manager
-- ✅ **Git** for cloning repository
+- ✅ **Java 11+** for desktop application
+- ✅ **Maven 3.6+** for Java compilation
+- ✅ **Firebase account** for authentication
+- ✅ **Git** for version control
 
 <br>
 
@@ -203,105 +266,159 @@ CodeSphere/
 
 ### 🚀 Quick Start
 
-1. Clone and start all services:
+1. **Clone the repository:**
 
    ```bash
-   git clone <repository-url>
-   cd code-verse-desktop
-   chmod +x start-servers.sh
-   ./start-servers.sh
+   git clone https://github.com/abhishekgiri04/CodeSphere.git
+   cd CodeSphere
    ```
 
-2. Access the platform:
+2. **Configure environment:**
+
+   ```bash
+   cp .env.example .env
+   # Add your Firebase configuration to .env file
+   ```
+
+3. **Start web application:**
+
+   ```bash
+   chmod +x run.sh
+   ./run.sh
+   ```
+
+4. **Start desktop application:**
+
+   ```bash
+   chmod +x start-swing.sh
+   ./start-swing.sh
+   ```
+
+5. **Access the applications:**
 
    ```
-   Frontend: http://localhost:8080
-   Backend:  http://localhost:3001
+   Web App: http://localhost:8080
+   Backend: http://localhost:3001
+   Desktop: Java Swing GUI
    ```
 
-### 🔧 Manual Setup
+### 🔧 Environment Setup
 
-```bash
-# Install dependencies
-npm install
+Create `.env` file in root directory:
 
-# Start frontend (port 8080)
-npm run dev
+```env
+# Firebase Configuration
+VITE_FIREBASE_API_KEY=your_api_key_here
+VITE_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=your_project_id
+VITE_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+VITE_FIREBASE_APP_ID=your_app_id
+VITE_FIREBASE_MEASUREMENT_ID=your_measurement_id
 
-# Start backend server (new terminal)
-npm run server
-
-# Or start both simultaneously
-npm run start:all
+# Server Configuration
+PORT=3001
+NODE_ENV=development
 ```
 <br>
 
 ---
 
-## 📖 Core Components
+## 🎯 Core Features
 
-* **Room.tsx** — Main collaborative workspace with code editor, whiteboard, and chat
-* **MonacoCodeEditor.tsx** — Professional code editor with syntax highlighting and IntelliSense
-* **RealWhiteboard.tsx** — Interactive canvas for drawing diagrams and visual explanations
-* **ChatSidebar.tsx** — Real-time messaging system with user presence indicators
-* **CollaborationContext.tsx** — Real-time state synchronization and user management
-* **index.js** — Express server with Socket.IO for real-time communication
-* **UsersSidebar.tsx** — Live user presence and collaboration status display
-* **EditorToolbar.tsx** — Code editor controls, language selection, and execution tools
+### 👥 Real-time Collaboration
+- **Live Code Editing** → Multiple users editing simultaneously
+- **Cursor Tracking** → See where team members are working
+- **User Presence** → Real-time user status and activity
+- **Instant Sync** → Changes reflected immediately across all clients
+
+### 🎨 Interactive Whiteboard
+- **Drawing Tools** → Pen, eraser, shapes, and colors
+- **Real-time Drawing** → Collaborative visual explanations
+- **Save & Load** → Persistent whiteboard sessions
+- **Multi-user Canvas** → Multiple users drawing simultaneously
+
+### ⚡ Code Execution
+- **Multi-language Support** → Java, Python, JavaScript, C++
+- **Real Compilation** → Actual compiler integration
+- **Instant Results** → Fast code execution and output
+- **Error Handling** → Comprehensive error reporting
+
+### 💬 Team Communication
+- **Built-in Chat** → Real-time messaging system
+- **@Mentions** → Tag team members in conversations
+- **User Notifications** → Message alerts and updates
+- **Chat History** → Persistent conversation logs
 
 <br>
 
 ---
 
-## 🌐 API Endpoints
+## 🌐 API Integration
 
 ```bash
-# Backend Server (Port 3001)
-WebSocket /socket.io          # Real-time collaboration events
-POST /execute                 # Code execution endpoint
-GET  /health                  # Server health check
-GET  /rooms/:id               # Room information
-POST /rooms                   # Create new room
+# Backend Services
+Socket.IO Server    # Real-time collaboration
+Express.js API      # REST endpoints
+Firebase Auth       # User authentication
+Firebase Firestore  # Data persistence
+
+# Code Execution
+Java Compiler       # javac command integration
+Python Interpreter  # python3 command
+Node.js Runtime     # node command
+G++ Compiler        # g++ command integration
 ```
 <br>
 
 ---
 
-## 🧪 Testing
+## 🧪 Testing & Development
 
 ```bash
-# Test frontend
-npm run lint
-npm run build
+# Web Application
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run lint         # Code linting
+npm run preview      # Preview production build
 
-# Test backend server
+# Desktop Application
+mvn clean compile    # Compile Java code
+mvn exec:java        # Run desktop app
+mvn package          # Create executable JAR
+
+# Server
 cd server
-node index.js
-
-# Test real-time features
-# Open multiple browser tabs to test collaboration
+npm start            # Start backend server
+npm run dev          # Start with nodemon
 ```
 
 ## ⚠️ Common Issues
 
-**Port already in use:**
+**Firebase connection failed:**
 ```bash
-lsof -ti:8080 | xargs kill -9
-lsof -ti:3001 | xargs kill -9
-npm run start:all
+# Check your .env file configuration
+# Ensure Firebase project is properly set up
+# Verify API keys are correct and have proper permissions
 ```
 
-**Socket.IO connection failed:**
+**Java compilation errors:**
 ```bash
-cd server && npm install
-npm run server
+# Ensure Java 11+ is installed
+java -version
+# Ensure Maven is installed
+mvn -version
+# Clean and recompile
+mvn clean compile
 ```
 
-**Frontend dependencies:**
+**Socket.IO connection issues:**
 ```bash
-rm -rf node_modules && npm install
-npm run dev
+# Check if backend server is running on port 3001
+# Verify firewall settings
+# Ensure CORS is properly configured
 ```
+
 <br>
 
 ---
@@ -309,32 +426,62 @@ npm run dev
 ## 📊 Performance Metrics
 
 - **<50ms Latency** — Real-time collaboration synchronization speed
-- **Multi-Language** — Java, Python, JavaScript code execution support
+- **Multi-Language** — Java, Python, JavaScript, C++ execution support
 - **99.9% Uptime** — Reliable WebSocket connections and server availability
-- **Responsive Design** — Optimized for desktop and tablet devices
+- **Responsive Design** — Optimized for desktop, tablet, and mobile devices
 - **Room-Based** — Unlimited concurrent collaboration sessions
 - **Real-Time** — Instant code synchronization and user presence updates
+- **Secure** — Firebase authentication and environment variable protection
+- **Cross-Platform** — Web and desktop versions with feature parity
 
 <br>
 
 ---
 
-## 🌱 Future Scope
+## 🚀 Deployment
+
+**🌐 Web Application:**
+```bash
+# Build for production
+npm run build
+
+# Deploy to Vercel
+vercel --prod
+```
+
+**🖥️ Desktop Application:**
+```bash
+# Create executable JAR
+mvn clean package
+
+# Run standalone
+java -jar target/codesphere-app-1.0-SNAPSHOT.jar
+```
+
+**Local Development:**
+```bash
+Web Frontend: http://localhost:8080
+Backend API:  http://localhost:3001
+Desktop App:  Java Swing GUI
+```
+
+<br>
+
+---
+
+## 🌱 Future Enhancements
 - 📱 **Mobile Application** — Native iOS and Android apps for mobile coding
-
 - 🎥 **Video/Audio Calls** — Integrated voice and video communication
-
 - 📁 **File Management** — Project file upload, sharing, and version control
-
-- 🔐 **User Authentication** — Secure login system with user profiles
-
+- 🔐 **Advanced Authentication** — SSO, LDAP, and enterprise integrations
 - ☁️ **Cloud Deployment** — AWS/Azure hosting with auto-scaling
-
 - 🔌 **Plugin System** — Extensible architecture for custom integrations
+- 🤖 **AI Code Assistant** — Intelligent code suggestions and completions
+- 📊 **Analytics Dashboard** — Usage metrics and collaboration insights
 
-  <br>
+<br>
 
-  ---  
+---  
 
 ## 📞 Help & Contact  
 
@@ -343,7 +490,7 @@ npm run dev
 
 <div align="center">
 
-<b>👤 Abhishek Giri</b>  
+**👤 Abhishek Giri - Full Stack Developer**  
 <a href="https://www.linkedin.com/in/abhishek-giri04/">
   <img src="https://img.shields.io/badge/Connect%20on-LinkedIn-blue?style=for-the-badge&logo=linkedin" alt="LinkedIn - Abhishek Giri"/>
 </a>  
@@ -359,7 +506,7 @@ npm run dev
 ---
 
 **🚀 Built with ❤️ for Collaborative Coding**  
-*Transforming Remote Development Through Real-Time Collaboration*
+*CodeSphere: Transforming Remote Development Through Real-Time Collaboration*
 
 </div>
 
@@ -367,6 +514,6 @@ npm run dev
 
 <div align="center">
 
-**© 2025 CodeSphere - Collaborative Code Editor Platform. All Rights Reserved.**
+**© 2025 CodeSphere - Real-Time Collaborative Code Editor Platform. All Rights Reserved.**
 
 </div>

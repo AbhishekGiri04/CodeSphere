@@ -3,47 +3,156 @@ import Editor from "@monaco-editor/react";
 import { useEditorContext } from "@/contexts/EditorContext";
 import { useCollaborationContext } from "@/contexts/CollaborationContext";
 import { Button } from "@/components/ui/button";
-import { Play, Settings, Download, Copy } from "lucide-react";
+import { Play, Download, Copy, Undo, Redo } from "lucide-react";
+import { toast } from "sonner";
 
 export default function ProfessionalCodeEditor() {
   const { code, setCode, language } = useEditorContext();
-  const { updateUserPosition } = useCollaborationContext();
+  const { updateUserPosition, socket, roomId } = useCollaborationContext();
   const [output, setOutput] = useState<string>("");
   const [isRunning, setIsRunning] = useState(false);
   const [executionTime, setExecutionTime] = useState<number>(0);
   const editorRef = useRef<any>(null);
 
+  // Listen for theme changes and update Monaco theme
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      if (editorRef.current) {
+        const isDark = document.documentElement.classList.contains('dark');
+        const monaco = (window as any).monaco;
+        if (monaco) {
+          monaco.editor.setTheme(isDark ? 'codesphere-dark' : 'codesphere-light');
+        }
+      }
+    });
+    
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class']
+    });
+    
+    return () => observer.disconnect();
+  }, []);
+
+  // Listen for code updates from other users
+  useEffect(() => {
+    if (socket) {
+      socket.on('code-update', (data) => {
+        if (editorRef.current && data.code !== code) {
+          const position = editorRef.current.getPosition();
+          setCode(data.code);
+          // Restore cursor position after update
+          setTimeout(() => {
+            if (editorRef.current) {
+              editorRef.current.setPosition(position);
+            }
+          }, 0);
+        }
+      });
+
+      return () => {
+        socket.off('code-update');
+      };
+    }
+  }, [socket, code, setCode]);
+
   const handleEditorDidMount = (editor: any, monaco: any) => {
     editorRef.current = editor;
     
-    // Custom theme matching CodeSphere
+    // VS Code-like themes for light and dark mode
     monaco.editor.defineTheme('codesphere-dark', {
       base: 'vs-dark',
       inherit: true,
       rules: [
-        { token: 'comment', foreground: '6B7280', fontStyle: 'italic' },
-        { token: 'keyword', foreground: '60A5FA', fontStyle: 'bold' },
-        { token: 'string', foreground: '34D399' },
-        { token: 'number', foreground: 'F59E0B' },
-        { token: 'type', foreground: '8B5CF6' },
-        { token: 'function', foreground: '06B6D4' },
+        { token: 'comment', foreground: '6A9955', fontStyle: 'italic' },
+        { token: 'keyword', foreground: '569CD6', fontStyle: 'bold' },
+        { token: 'string', foreground: 'CE9178' },
+        { token: 'number', foreground: 'B5CEA8' },
+        { token: 'type', foreground: '4EC9B0' },
+        { token: 'function', foreground: 'DCDCAA' },
       ],
       colors: {
-        'editor.background': '#0F172A',
-        'editor.foreground': '#E2E8F0',
-        'editor.lineHighlightBackground': '#1E293B',
-        'editor.selectionBackground': '#334155',
-        'editorCursor.foreground': '#06B6D4',
-        'editorLineNumber.foreground': '#64748B',
-        'editorLineNumber.activeForeground': '#06B6D4',
+        'editor.background': '#1E1E1E',
+        'editor.foreground': '#D4D4D4',
+        'editor.lineHighlightBackground': '#2A2D2E',
+        'editor.selectionBackground': '#264F78',
+        'editorCursor.foreground': '#AEAFAD',
+        'editorLineNumber.foreground': '#858585',
+        'editorLineNumber.activeForeground': '#C6C6C6',
       }
     });
     
-    monaco.editor.setTheme('codesphere-dark');
+    monaco.editor.defineTheme('codesphere-light', {
+      base: 'vs',
+      inherit: true,
+      rules: [
+        { token: 'comment', foreground: '008000', fontStyle: 'italic' },
+        { token: 'keyword', foreground: '0000FF', fontStyle: 'bold' },
+        { token: 'string', foreground: 'A31515' },
+        { token: 'number', foreground: '098658' },
+        { token: 'type', foreground: '267F99' },
+        { token: 'function', foreground: '795E26' },
+      ],
+      colors: {
+        'editor.background': '#FFFFFF',
+        'editor.foreground': '#000000',
+        'editor.lineHighlightBackground': '#F3F3F3',
+        'editor.selectionBackground': '#ADD6FF',
+        'editorCursor.foreground': '#000000',
+        'editorLineNumber.foreground': '#237893',
+        'editorLineNumber.activeForeground': '#0B216F',
+      }
+    });
     
+    // Set theme based on current theme
+    const isDark = document.documentElement.classList.contains('dark');
+    monaco.editor.setTheme(isDark ? 'codesphere-dark' : 'codesphere-light');
+    
+    // Enable keyboard shortcuts
+    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyZ, () => {
+      editor.trigger('keyboard', 'undo', null);
+      toast.success("Undo");
+    });
+    
+    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyY, () => {
+      editor.trigger('keyboard', 'redo', null);
+      toast.success("Redo");
+    });
+    
+    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyC, () => {
+      const selection = editor.getSelection();
+      if (selection && !selection.isEmpty()) {
+        editor.trigger('keyboard', 'editor.action.clipboardCopyAction', null);
+        toast.success("Selection copied");
+      }
+    });
+    
+    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyV, () => {
+      navigator.clipboard.readText().then(text => {
+        const selection = editor.getSelection();
+        if (selection) {
+          editor.executeEdits('paste', [{
+            range: selection,
+            text: text
+          }]);
+          toast.success("Content pasted");
+        }
+      }).catch(() => {
+        editor.trigger('keyboard', 'editor.action.clipboardPasteAction', null);
+      });
+    });
+
     // Listen for cursor position changes
     editor.onDidChangeCursorPosition((e: any) => {
       updateUserPosition(e.position.lineNumber, e.position.column);
+    });
+    editor.onDidChangeModelContent((e: any) => {
+      if (socket && roomId) {
+        socket.emit('code-change', {
+          roomId,
+          code: editor.getValue()
+        });
+      }
     });
   };
 
@@ -73,8 +182,50 @@ export default function ProfessionalCodeEditor() {
     }
   };
 
-  const copyCode = () => {
-    navigator.clipboard.writeText(code);
+  const handleUndo = () => {
+    if (editorRef.current) {
+      editorRef.current.trigger('keyboard', 'undo', null);
+      toast.success("Undo action performed");
+    }
+  };
+
+  const handleRedo = () => {
+    if (editorRef.current) {
+      editorRef.current.trigger('keyboard', 'redo', null);
+      toast.success("Redo action performed");
+    }
+  };
+
+  const handleCopy = () => {
+    if (editorRef.current) {
+      const selection = editorRef.current.getSelection();
+      if (selection && !selection.isEmpty()) {
+        editorRef.current.trigger('keyboard', 'editor.action.clipboardCopyAction', null);
+        toast.success("Selection copied to clipboard");
+      } else {
+        navigator.clipboard.writeText(code);
+        toast.success("All code copied to clipboard");
+      }
+    }
+  };
+
+  const handlePaste = async () => {
+    if (editorRef.current) {
+      try {
+        const text = await navigator.clipboard.readText();
+        const selection = editorRef.current.getSelection();
+        if (selection) {
+          editorRef.current.executeEdits('paste', [{
+            range: selection,
+            text: text
+          }]);
+          toast.success("Content pasted");
+        }
+      } catch (error) {
+        editorRef.current.trigger('keyboard', 'editor.action.clipboardPasteAction', null);
+        toast.success("Content pasted");
+      }
+    }
   };
 
   const downloadCode = () => {
@@ -88,9 +239,9 @@ export default function ProfessionalCodeEditor() {
   };
 
   return (
-    <div className="flex flex-col h-full bg-slate-950">
+    <div className="flex flex-col h-full bg-background">
       {/* Professional Header */}
-      <div className="flex justify-between items-center bg-gradient-to-r from-slate-900 to-slate-800 p-4 border-b border-slate-700/50 shadow-lg">
+      <div className="flex justify-between items-center bg-muted/50 p-4 border-b border-border shadow-sm">
         <div className="flex items-center gap-4">
           <div className="flex gap-1.5">
             <div className="w-3 h-3 bg-red-500 rounded-full shadow-sm"></div>
@@ -98,20 +249,41 @@ export default function ProfessionalCodeEditor() {
             <div className="w-3 h-3 bg-green-500 rounded-full shadow-sm"></div>
           </div>
           <div className="flex items-center gap-2">
-            <div className="text-sm font-semibold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+            <div className="text-sm font-semibold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
               {language.toUpperCase()}
             </div>
-            <div className="text-slate-400">•</div>
-            <div className="text-sm text-slate-300">CodeSphere Editor</div>
+            <div className="text-muted-foreground">•</div>
+            <div className="text-sm text-foreground">CodeSphere Editor</div>
           </div>
         </div>
         
         <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={handleUndo}
+              className="text-muted-foreground hover:text-foreground h-8 w-8 p-0"
+              title="Undo (Ctrl+Z)"
+            >
+              <Undo className="w-4 h-4" />
+            </Button>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={handleRedo}
+              className="text-muted-foreground hover:text-foreground h-8 w-8 p-0"
+              title="Redo (Ctrl+Y)"
+            >
+              <Redo className="w-4 h-4" />
+            </Button>
+          </div>
           <Button 
             variant="ghost" 
             size="sm" 
-            onClick={copyCode}
-            className="text-slate-400 hover:text-white hover:bg-slate-700"
+            onClick={handleCopy}
+            className="text-muted-foreground hover:text-foreground"
+            title="Copy (Ctrl+C)"
           >
             <Copy className="w-4 h-4" />
           </Button>
@@ -119,7 +291,7 @@ export default function ProfessionalCodeEditor() {
             variant="ghost" 
             size="sm" 
             onClick={downloadCode}
-            className="text-slate-400 hover:text-white hover:bg-slate-700"
+            className="text-muted-foreground hover:text-foreground"
           >
             <Download className="w-4 h-4" />
           </Button>
@@ -127,7 +299,7 @@ export default function ProfessionalCodeEditor() {
             onClick={runCode} 
             disabled={isRunning} 
             size="sm" 
-            className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-medium px-6 py-2 rounded-lg transition-all duration-300 shadow-lg hover:shadow-blue-500/25 transform hover:scale-105"
+            className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-medium px-6 py-2 rounded-lg transition-all duration-300 shadow-lg hover:shadow-blue-500/25"
           >
             <Play className="w-4 h-4 mr-2" /> 
             {isRunning ? "Executing..." : "Run Code"}
@@ -178,40 +350,54 @@ export default function ProfessionalCodeEditor() {
             occurrencesHighlight: "singleFile",
             selectionHighlight: true,
             foldingStrategy: "indentation",
-            showFoldingControls: "mouseover"
+            showFoldingControls: "mouseover",
+            quickSuggestions: true,
+            parameterHints: { enabled: true },
+            formatOnPaste: true,
+            formatOnType: true
           }}
         />
       </div>
       
       {/* Professional Terminal Output */}
       {output && (
-        <div className="bg-slate-950 border-t border-slate-700/50 shadow-2xl">
-          <div className="flex items-center justify-between bg-gradient-to-r from-slate-900 to-slate-800 px-4 py-3 border-b border-slate-700/30">
+        <div className="bg-background border-t border-border shadow-lg">
+          <div className="flex items-center justify-between bg-muted/50 px-4 py-3 border-b border-border">
             <div className="flex items-center gap-3">
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse shadow-sm"></div>
-              <span className="text-sm font-semibold text-slate-200">Terminal Output</span>
+              <div className="flex gap-1">
+                <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+              </div>
+              <span className="text-sm font-semibold text-foreground">Terminal</span>
               {executionTime > 0 && (
-                <span className="text-xs text-slate-400 bg-slate-800 px-2 py-1 rounded">
+                <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded font-mono">
                   {executionTime}ms
                 </span>
               )}
             </div>
-            <div className="text-xs text-slate-500 font-mono">CodeSphere Runtime v1.0</div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-muted-foreground font-mono">CodeSphere Runtime</span>
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+            </div>
           </div>
-          <div className="bg-black/90 text-green-400 p-5 font-mono text-sm max-h-48 overflow-auto">
-            <div className="flex items-center gap-2 mb-3 text-cyan-400">
-              <span className="text-blue-400">$</span>
-              <span className="text-slate-400">
+          <div className="bg-slate-950 dark:bg-slate-950 light:bg-slate-100 text-green-400 dark:text-green-400 light:text-slate-800 p-4 font-mono text-sm max-h-64 overflow-auto">
+            <div className="flex items-center gap-2 mb-2 text-blue-400 dark:text-blue-400 light:text-blue-600">
+              <span className="text-green-500">➜</span>
+              <span className="text-muted-foreground font-semibold">
                 {language === 'java' ? 'javac Main.java && java Main' : 
                  language === 'python' ? 'python3 script.py' :
                  language === 'cpp' ? 'g++ -o program program.cpp && ./program' :
                  'node script.js'}
               </span>
             </div>
-            <pre className="whitespace-pre-wrap leading-relaxed text-green-300">{output}</pre>
-            <div className="flex items-center gap-2 mt-3 text-slate-500 border-t border-slate-800 pt-2">
-              <div className="w-2 h-3 bg-green-400 animate-pulse"></div>
-              <span className="text-xs">Process completed successfully</span>
+            <div className="border-l-2 border-green-500/30 pl-3 ml-2">
+              <pre className="whitespace-pre-wrap leading-relaxed text-green-400 dark:text-green-400 light:text-slate-700">{output}</pre>
+            </div>
+            <div className="flex items-center gap-2 mt-3 pt-2 border-t border-slate-800 dark:border-slate-800 light:border-slate-300">
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+              <span className="text-xs text-muted-foreground">Process completed • Exit code: 0</span>
+              <span className="text-xs text-muted-foreground ml-auto">{new Date().toLocaleTimeString()}</span>
             </div>
           </div>
         </div>

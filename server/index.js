@@ -19,6 +19,11 @@ const PORT = 3001;
 app.use(cors());
 app.use(express.json());
 
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.json({ status: 'OK', message: 'CodeSphere backend is running', timestamp: new Date() });
+});
+
 // Store room data
 const rooms = new Map();
 
@@ -101,6 +106,7 @@ app.post('/execute', (req, res) => {
   const timestamp = Date.now();
   
   let fileName, command;
+  let modifiedCode = code;
   
   switch (language) {
     case 'java':
@@ -111,14 +117,14 @@ app.post('/execute', (req, res) => {
         className = classMatch[1];
       } else {
         // If no public class, wrap code in Main class
-        code = `public class Main {
+        modifiedCode = `public class Main {
     public static void main(String[] args) {
 ${code.split('\n').map(line => '        ' + line).join('\n')}
     }
 }`;
       }
       fileName = `${className}.java`;
-      fs.writeFileSync(path.join(tempDir, fileName), code);
+      fs.writeFileSync(path.join(tempDir, fileName), modifiedCode);
       command = `cd ${tempDir} && javac ${fileName} && java ${className}`;
       break;
       
@@ -131,13 +137,15 @@ ${code.split('\n').map(line => '        ' + line).join('\n')}
     case 'cpp':
       // Add basic includes if missing
       if (!code.includes('#include')) {
-        code = `#include <iostream>
+        modifiedCode = `#include <iostream>
+#include <string>
+#include <vector>
 using namespace std;
 
 ${code}`;
       }
       fileName = `program_${timestamp}.cpp`;
-      fs.writeFileSync(path.join(tempDir, fileName), code);
+      fs.writeFileSync(path.join(tempDir, fileName), modifiedCode);
       command = `cd ${tempDir} && g++ -o program_${timestamp} ${fileName} && ./program_${timestamp}`;
       break;
       
@@ -151,21 +159,39 @@ ${code}`;
       return res.json({ error: 'Unsupported language' });
   }
   
-  exec(command, { timeout: 5000 }, (error, stdout, stderr) => {
+  exec(command, { timeout: 10000 }, (error, stdout, stderr) => {
+    // Cleanup temporary files
     try {
-      const files = fs.readdirSync(tempDir).filter(f => f.includes(timestamp.toString()));
-      files.forEach(f => fs.unlinkSync(path.join(tempDir, f)));
+      const files = fs.readdirSync(tempDir).filter(f => 
+        f.includes(timestamp.toString()) || f.startsWith('Main.')
+      );
+      files.forEach(f => {
+        try {
+          fs.unlinkSync(path.join(tempDir, f));
+        } catch (e) {}
+      });
     } catch (e) {}
     
     if (error) {
+      let errorMessage = stderr || error.message;
+      
+      // Make error messages more user-friendly
+      if (errorMessage.includes('javac')) {
+        errorMessage = 'Java compilation error:\n' + errorMessage;
+      } else if (errorMessage.includes('g++')) {
+        errorMessage = 'C++ compilation error:\n' + errorMessage;
+      } else if (errorMessage.includes('SyntaxError')) {
+        errorMessage = 'Python syntax error:\n' + errorMessage;
+      }
+      
       return res.json({ 
-        output: stderr || error.message,
+        output: errorMessage,
         error: true 
       });
     }
     
     res.json({ 
-      output: stdout || 'No output',
+      output: stdout || 'Program executed successfully (no output)',
       error: false 
     });
   });

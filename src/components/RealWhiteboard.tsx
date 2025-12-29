@@ -9,7 +9,7 @@ export default function RealWhiteboard() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [currentTool, setCurrentTool] = useState<DrawingTool>("pen");
-  const [strokeColor, setStrokeColor] = useState("#ffffff");
+  const [strokeColor, setStrokeColor] = useState("#000000");
   const [strokeWidth, setStrokeWidth] = useState(2);
   const [startPos, setStartPos] = useState({ x: 0, y: 0 });
 
@@ -24,11 +24,37 @@ export default function RealWhiteboard() {
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
 
+    // Set canvas background based on theme
+    const isDark = document.documentElement.classList.contains('dark');
+    ctx.fillStyle = isDark ? '#1E1E1E' : '#FFFFFF';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
     // Set default styles
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
     ctx.strokeStyle = strokeColor;
     ctx.lineWidth = strokeWidth;
+  }, []);
+
+  // Listen for theme changes
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+      
+      const isDark = document.documentElement.classList.contains('dark');
+      ctx.fillStyle = isDark ? '#1E1E1E' : '#FFFFFF';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    });
+    
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class']
+    });
+    
+    return () => observer.disconnect();
   }, []);
 
   const startDrawing = (e: React.MouseEvent<HTMLCanvasElement>) => {
@@ -144,12 +170,12 @@ export default function RealWhiteboard() {
     { id: "line", icon: Minus, label: "Line" },
   ];
 
-  const colors = ["#ffffff", "#ff0000", "#00ff00", "#0000ff", "#ffff00", "#ff00ff", "#00ffff"];
+  const colors = ["#000000", "#ffffff", "#ff0000", "#00ff00", "#0000ff", "#ffff00", "#ff00ff", "#00ffff"];
 
   return (
-    <div className="flex flex-col h-full bg-slate-900">
+    <div className="flex flex-col h-full bg-background">
       {/* Toolbar */}
-      <div className="flex items-center gap-2 p-3 bg-slate-800 border-b border-slate-700">
+      <div className="flex items-center gap-2 p-3 bg-muted/50 border-b border-border">
         {/* Drawing Tools */}
         <div className="flex items-center gap-1">
           {tools.map((tool) => (
@@ -173,7 +199,7 @@ export default function RealWhiteboard() {
             <button
               key={color}
               className={`w-6 h-6 rounded border-2 ${
-                strokeColor === color ? "border-white" : "border-slate-600"
+                strokeColor === color ? "border-foreground" : "border-border"
               }`}
               style={{ backgroundColor: color }}
               onClick={() => setStrokeColor(color)}
@@ -185,7 +211,7 @@ export default function RealWhiteboard() {
 
         {/* Stroke Width */}
         <div className="flex items-center gap-2">
-          <span className="text-sm text-slate-300">Size:</span>
+          <span className="text-sm text-foreground">Size:</span>
           <input
             type="range"
             min="1"
@@ -194,7 +220,7 @@ export default function RealWhiteboard() {
             onChange={(e) => setStrokeWidth(Number(e.target.value))}
             className="w-20"
           />
-          <span className="text-sm text-slate-300 w-6">{strokeWidth}</span>
+          <span className="text-sm text-foreground w-6">{strokeWidth}</span>
         </div>
 
         <Separator orientation="vertical" className="h-6" />

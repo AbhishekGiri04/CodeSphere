@@ -1,8 +1,11 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { useAuth } from "./AuthContext";
 
 type User = {
   id: string;
   name: string;
+  email: string;
+  avatar: string;
   color: string;
   joinedAt: Date;
   isActive: boolean;
@@ -18,6 +21,7 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const { currentUser: firebaseUser } = useAuth();
 
   const generateUserColor = () => {
     const colors = [
@@ -33,17 +37,41 @@ export const UserContextProvider = ({ children }: { children: React.ReactNode })
     return colors[Math.floor(Math.random() * colors.length)];
   };
 
+  // Sync with Firebase user
   useEffect(() => {
-    if (!currentUser) {
-      // Only restore from localStorage if available
+    if (firebaseUser && !currentUser) {
+      const user: User = {
+        id: firebaseUser.uid,
+        name: firebaseUser.displayName || 'Anonymous',
+        email: firebaseUser.email || '',
+        avatar: firebaseUser.photoURL || '',
+        color: generateUserColor(),
+        joinedAt: new Date(),
+        isActive: true
+      };
+      setCurrentUser(user);
+      localStorage.setItem("codeSphereUser", JSON.stringify(user));
+    } else if (!firebaseUser && currentUser) {
+      setCurrentUser(null);
+      localStorage.removeItem("codeSphereUser");
+    }
+  }, [firebaseUser, currentUser]);
+
+  // Restore from localStorage on mount
+  useEffect(() => {
+    if (!currentUser && !firebaseUser) {
       const storedUser = localStorage.getItem("codeSphereUser");
       if (storedUser) {
-        setCurrentUser(JSON.parse(storedUser));
+        try {
+          const parsedUser = JSON.parse(storedUser);
+          setCurrentUser(parsedUser);
+        } catch (error) {
+          console.error('Error parsing stored user:', error);
+          localStorage.removeItem("codeSphereUser");
+        }
       }
-    } else {
-      localStorage.setItem("codeSphereUser", JSON.stringify(currentUser));
     }
-  }, [currentUser]);
+  }, [currentUser, firebaseUser]);
 
   return (
     <UserContext.Provider value={{ 

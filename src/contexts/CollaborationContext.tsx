@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useUserContext } from "./UserContext";
+import { io, Socket } from "socket.io-client";
 
 type UserPosition = {
   userId: string;
@@ -41,6 +42,8 @@ type CollaborationContextType = {
   setChatOpen: (open: boolean) => void;
   usersOpen: boolean;
   setUsersOpen: (open: boolean) => void;
+  joinRoom: (roomId: string, user: any) => void;
+  socket: Socket | null;
 };
 
 const CollaborationContext = createContext<CollaborationContextType | undefined>(undefined);
@@ -54,43 +57,114 @@ export const CollaborationContextProvider = ({ children }: { children: React.Rea
   const [messages, setMessages] = useState<CollaborationMessage[]>([]);
   const [chatOpen, setChatOpen] = useState(true);
   const [usersOpen, setUsersOpen] = useState(true);
+  const [socket, setSocket] = useState<Socket | null>(null);
 
-  // On room join, add the real user to activeUsers
+  // Initialize Socket.IO connection
   useEffect(() => {
-    if (roomId && currentUser) {
-      // Set joinedAt to now when joining a new room
-      const userWithJoinTime = { ...currentUser, joinedAt: new Date(), lastActivity: new Date() };
+    const newSocket = io('http://localhost:3001', {
+      transports: ['websocket', 'polling']
+    });
+
+    newSocket.on('connect', () => {
+      console.log('Connected to server');
       setConnected(true);
-      setActiveUsers([userWithJoinTime]);
-      setUserPositions([]);
-      setMessages([]);
-    } else {
+    });
+
+    newSocket.on('disconnect', () => {
+      console.log('Disconnected from server');
       setConnected(false);
-      setActiveUsers([]);
-      setUserPositions([]);
-      setMessages([]);
+    });
+
+    newSocket.on('room-state', (data) => {
+      console.log('Room state received:', data);
+      setActiveUsers(data.users || []);
+    });
+
+    newSocket.on('user-joined', (user) => {
+      console.log('User joined:', user);
+      setActiveUsers(prev => [...prev, { ...user, lastActivity: new Date() }]);
+    });
+
+    newSocket.on('user-left', (user) => {
+      console.log('User left:', user);
+      setActiveUsers(prev => prev.filter(u => u.id !== user.id));
+    });
+
+    newSocket.on('new-message', (message) => {
+      console.log('New message:', message);
+      setMessages(prev => [{
+        id: message.id.toString(),
+        userId: message.user.id,
+        username: message.user.name,
+        content: message.message,
+        timestamp: new Date(message.timestamp),
+        mentions: []
+      }, ...prev]);
+    });
+
+    newSocket.on('cursor-update', (data) => {
+      setUserPositions(prev => {
+        const filtered = prev.filter(p => p.userId !== data.userId);
+        return [...filtered, {
+          userId: data.userId,
+          username: data.username || 'Unknown',
+          color: data.color || '#8B5CF6',
+          line: data.position.line,
+          column: data.position.column,
+          lastActivity: new Date()
+        }];
+      });
+    });
+
+    setSocket(newSocket);
+
+    return () => {
+      newSocket.close();
+    };
+  }, []);
+
+  const joinRoom = (roomId: string, user: any) => {
+    if (socket && user) {
+      console.log('Joining room:', roomId, user);
+      socket.emit('join-room', { roomId, user });
+      setRoomId(roomId);
     }
-  }, [roomId, currentUser]);
+  };
 
   const sendMessage = (content: string) => {
-    if (!roomId || !connected || !currentUser) return;
-    const mentionRegex = /@(\w+)/g;
-    const mentions = Array.from(content.matchAll(mentionRegex), match => match[1]);
-    const newMessage: CollaborationMessage = {
-      id: `msg${Date.now()}`,
-      userId: currentUser.id,
-      username: currentUser.name,
-      content,
-      timestamp: new Date(),
-      mentions
-    };
-    setMessages(prev => [newMessage, ...prev]);
+    if (!roomId || !connected || !currentUser || !socket) return;
+    
+    // Only emit to server - don't add locally to avoid duplicates
+    socket.emit('chat-message', {
+      roomId,
+      message: content,
+      user: currentUser
+    });
   };
 
   const updateUserPosition = (line: number, column: number) => {
-    if (!roomId || !connected || !currentUser) return;
-    setUserPositions([{ userId: currentUser.id, username: currentUser.name, color: currentUser.color, line, column, lastActivity: new Date() }]);
+    if (!roomId || !connected || !currentUser || !socket) return;
+    
+    socket.emit('cursor-position', {
+      roomId,
+      position: { line, column },
+      user: currentUser
+    });
   };
+
+  // On room join, add the real user to activeUsers
+  useEffect(() => {
+    if (roomId && currentUser && connected) {
+      const userWithJoinTime = { ...currentUser, joinedAt: new Date(), lastActivity: new Date() };
+      setActiveUsers(prev => {
+        const exists = prev.find(u => u.id === currentUser.id);
+        if (!exists) {
+          return [userWithJoinTime, ...prev];
+        }
+        return prev;
+      });
+    }
+  }, [roomId, currentUser, connected]);
 
   return (
     <CollaborationContext.Provider value={{ 
@@ -106,7 +180,9 @@ export const CollaborationContextProvider = ({ children }: { children: React.Rea
       chatOpen,
       setChatOpen,
       usersOpen,
-      setUsersOpen
+      setUsersOpen,
+      joinRoom,
+      socket
     }}>
       {children}
     </CollaborationContext.Provider>
