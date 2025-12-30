@@ -44,34 +44,25 @@ export default function Room() {
       setRoomId(roomIdParam);
     }
     
+    // Simple connection like before
+    setTimeout(() => {
+      setConnected(true);
+      if (!hasShownConnectedToast.current) {
+        toast.success(`Connected to room: ${roomIdParam}`, {
+          description: `Room code: ${roomIdParam?.toUpperCase()}`,
+        });
+        hasShownConnectedToast.current = true;
+      }
+      setShowConnectionStatus(false);
+    }, 1000);
+    
     return () => {
       setRoomId(null);
       hasShownConnectedToast.current = false;
     };
-  }, [roomIdParam, currentUser, joinRoom, setRoomId, navigate]);
+  }, [roomIdParam, currentUser, joinRoom, setRoomId, navigate, setConnected]);
   
-  // Auto-hide loading screen after 2 seconds or when connected
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowConnectionStatus(false);
-    }, 2000);
-    
-    if (connected) {
-      clearTimeout(timer);
-      setShowConnectionStatus(false);
-    }
-    
-    return () => clearTimeout(timer);
-  }, [connected]);
-  useEffect(() => {
-    if (connected && !hasShownConnectedToast.current) {
-      toast.success(`Connected to room: ${roomIdParam}`, {
-        description: `Room code: ${roomIdParam?.toUpperCase()}`,
-      });
-      hasShownConnectedToast.current = true;
-      setShowConnectionStatus(false);
-    }
-  }, [connected, roomIdParam]);
+
   
   // Show loading state only briefly
   if (showConnectionStatus) {
