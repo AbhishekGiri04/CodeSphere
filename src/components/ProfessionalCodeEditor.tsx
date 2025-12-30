@@ -161,8 +161,12 @@ export default function ProfessionalCodeEditor() {
     setOutput("");
     const startTime = Date.now();
     
+    const backendUrl = window.location.hostname === 'localhost' 
+      ? 'http://localhost:3001' 
+      : 'https://codesphere-dev.onrender.com';
+    
     try {
-      const response = await fetch('http://localhost:3001/execute', {
+      const response = await fetch(`${backendUrl}/execute`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -175,7 +179,7 @@ export default function ProfessionalCodeEditor() {
       setExecutionTime(Date.now() - startTime);
     } catch (error) {
       console.error('Execution error:', error);
-      setOutput(`❌ Connection Error: Backend server not running on localhost:3001\n\nTo fix this:\n1. Open terminal\n2. Run: cd server && node index.js`);
+      setOutput(`❌ Connection Error: Backend server not available\n\nPlease check if the backend service is running.`);
       setExecutionTime(Date.now() - startTime);
     } finally {
       setIsRunning(false);
