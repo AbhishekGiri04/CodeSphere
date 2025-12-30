@@ -61,7 +61,11 @@ export const CollaborationContextProvider = ({ children }: { children: React.Rea
 
   // Initialize Socket.IO connection
   useEffect(() => {
-    const newSocket = io('https://codesphere-dev.onrender.com', {
+    const backendUrl = import.meta.env.PROD 
+      ? 'https://codesphere-dev.onrender.com' 
+      : 'http://localhost:3001';
+      
+    const newSocket = io(backendUrl, {
       transports: ['websocket', 'polling']
     });
 
