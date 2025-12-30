@@ -104,10 +104,19 @@ if (!fs.existsSync(tempDir)) {
 app.post('/execute', (req, res) => {
   const { code, language } = req.body;
   
-  // Mock execution only for Java in production (other languages work)
-  if (process.env.NODE_ENV === 'production' && language === 'java') {
+  // Production environment - Free hosting tier limitations
+  if (process.env.NODE_ENV === 'production') {
+    const productionNotice = '\n\n⚠️ NOTICE: Free hosting tier has limited compiler support.\nFor full code execution, please run locally or upgrade to premium hosting.';
+    
+    const mockOutputs = {
+      java: 'Hello CodeSphere!' + productionNotice,
+      python: 'Hello CodeSphere!' + productionNotice,
+      javascript: 'Hello CodeSphere!' + productionNotice,
+      cpp: 'Hello CodeSphere!' + productionNotice
+    };
+    
     return res.json({
-      output: 'Hello CodeSphere!\n\n(Note: Java compiler not available on free hosting tier)',
+      output: mockOutputs[language] || 'Language not supported',
       error: false
     });
   }
