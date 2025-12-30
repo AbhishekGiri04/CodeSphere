@@ -50,14 +50,19 @@ export default function Room() {
     };
   }, [roomIdParam, currentUser, joinRoom, setRoomId, navigate]);
   
-  // Auto-hide loading screen after 3 seconds
+  // Auto-hide loading screen after 2 seconds or when connected
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowConnectionStatus(false);
-    }, 3000);
+    }, 2000);
+    
+    if (connected) {
+      clearTimeout(timer);
+      setShowConnectionStatus(false);
+    }
     
     return () => clearTimeout(timer);
-  }, []);
+  }, [connected]);
   useEffect(() => {
     if (connected && !hasShownConnectedToast.current) {
       toast.success(`Connected to room: ${roomIdParam}`, {
@@ -69,7 +74,7 @@ export default function Room() {
   }, [connected, roomIdParam]);
   
   // Show loading state only briefly
-  if (!connected && showConnectionStatus) {
+  if (showConnectionStatus) {
     return (
       <div className="min-h-screen flex flex-col bg-background">
         <EditorToolbar />
