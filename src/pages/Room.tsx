@@ -44,21 +44,27 @@ export default function Room() {
       setRoomId(roomIdParam);
     }
     
-    // Simple connection like before
-    setTimeout(() => {
-      setConnected(true);
-      if (!hasShownConnectedToast.current) {
+    // Simple connection like before - only show toast once
+    if (!hasShownConnectedToast.current) {
+      setTimeout(() => {
+        setConnected(true);
         toast.success(`Connected to room: ${roomIdParam}`, {
           description: `Room code: ${roomIdParam?.toUpperCase()}`,
         });
         hasShownConnectedToast.current = true;
-      }
-      setShowConnectionStatus(false);
-    }, 1000);
+        setShowConnectionStatus(false);
+      }, 1000);
+    } else {
+      // If already shown toast, just connect without notification
+      setTimeout(() => {
+        setConnected(true);
+        setShowConnectionStatus(false);
+      }, 1000);
+    }
     
     return () => {
       setRoomId(null);
-      hasShownConnectedToast.current = false;
+      // Don't reset hasShownConnectedToast here to prevent duplicate toasts
     };
   }, [roomIdParam, currentUser, joinRoom, setRoomId, navigate, setConnected]);
   
