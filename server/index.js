@@ -103,6 +103,23 @@ if (!fs.existsSync(tempDir)) {
 
 app.post('/execute', (req, res) => {
   const { code, language } = req.body;
+  
+  // Mock execution for production (compilers not available on free hosting)
+  if (process.env.NODE_ENV === 'production') {
+    const mockOutputs = {
+      java: 'Hello CodeSphere!\n\n(Note: This is simulated output. Java compiler not available on free hosting tier)',
+      python: 'Hello CodeSphere!\n\n(Note: This is simulated output. Python not available on free hosting tier)',
+      javascript: 'Hello CodeSphere!\n\n(Note: This is simulated output. Node.js execution limited)',
+      cpp: 'Hello CodeSphere!\n\n(Note: This is simulated output. C++ compiler not available on free hosting tier)'
+    };
+    
+    return res.json({
+      output: mockOutputs[language] || 'Language not supported',
+      error: false
+    });
+  }
+  
+  // Local development - real execution
   const timestamp = Date.now();
   
   let fileName, command;
