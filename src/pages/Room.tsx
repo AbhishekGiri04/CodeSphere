@@ -36,42 +36,58 @@ export default function Room() {
       return;
     }
     
-    // Join room with WebSocket
+    // Try to join room with WebSocket
     if (typeof joinRoom === 'function') {
-      console.log('Joining room:', roomIdParam, currentUser);
       joinRoom(roomIdParam, currentUser);
     } else {
       setRoomId(roomIdParam);
     }
     
-    // Simple connection like before - only show toast once
-    if (!hasShownConnectedToast.current) {
+    // Simulate connecting to the room
+    const connectToRoom = () => {
+      setConnected(false);
+      
       setTimeout(() => {
         setConnected(true);
-        toast.success(`Connected to room: ${roomIdParam}`, {
-          description: `Room code: ${roomIdParam?.toUpperCase()}`,
-        });
-        hasShownConnectedToast.current = true;
-        setShowConnectionStatus(false);
+        if (!hasShownConnectedToast.current) {
+          toast.success(`Connected to room: ${roomIdParam}`, {
+            description: `Room code: ${roomIdParam.toUpperCase()}`,
+          });
+          hasShownConnectedToast.current = true;
+        }
+        
+        // Automatically hide the connection status overlay after connection
+        setTimeout(() => {
+          setShowConnectionStatus(false);
+        }, 1000); 
       }, 1000);
-    } else {
-      // If already shown toast, just connect without notification
-      setTimeout(() => {
-        setConnected(true);
-        setShowConnectionStatus(false);
-      }, 1000);
-    }
+    };
+    
+    connectToRoom();
+    
+    // Simulate periodic connection check and auto-reconnect
+    const connectionTimer = setInterval(() => {
+      if (!connected) {
+        setConnectionAttempts(prev => prev + 1);
+        if (connectionAttempts < 3) {
+          connectToRoom();
+        } else {
+          toast.error("Failed to connect. Please try again.");
+          navigate("/");
+        }
+      }
+    }, 5000);
     
     return () => {
       setRoomId(null);
-      // Don't reset hasShownConnectedToast here to prevent duplicate toasts
+      setConnected(false);
+      clearInterval(connectionTimer);
+      hasShownConnectedToast.current = false;
     };
-  }, [roomIdParam, currentUser, joinRoom, setRoomId, navigate, setConnected]);
+  }, [roomIdParam, currentUser]);
   
-
-  
-  // Show loading state only briefly
-  if (showConnectionStatus) {
+  // Show loading state without taking over the entire screen
+  if (!connected && showConnectionStatus) {
     return (
       <div className="min-h-screen flex flex-col bg-background">
         <EditorToolbar />
@@ -84,7 +100,7 @@ export default function Room() {
               onClick={() => setShowConnectionStatus(false)}
               className="mt-4 text-sm text-blue-500 hover:underline"
             >
-              Continue anyway
+              Skip waiting
             </button>
           </div>
         </div>

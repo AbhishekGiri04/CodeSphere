@@ -15,36 +15,6 @@ export default function AuthScreen() {
   const [roomCode, setRoomCode] = useState("");
   const [isCreating, setIsCreating] = useState(false);
   const [isJoining, setIsJoining] = useState(false);
-  const [roomStatus, setRoomStatus] = useState<string>("");
-
-  // Check room status when room code changes
-  useEffect(() => {
-    if (roomCode.trim().length >= 3) {
-      const checkRoom = async () => {
-        try {
-          const backendUrl = window.location.hostname === 'localhost' 
-            ? 'http://localhost:3001' 
-            : 'https://codesphere-dev.onrender.com';
-          
-          const response = await fetch(`${backendUrl}/room/${roomCode.toUpperCase()}`);
-          const data = await response.json();
-          
-          if (data.exists) {
-            setRoomStatus(`Room exists • ${data.userCount} user(s) online`);
-          } else {
-            setRoomStatus("New room • Will be created when you join");
-          }
-        } catch (error) {
-          setRoomStatus("");
-        }
-      };
-      
-      const debounceTimer = setTimeout(checkRoom, 500);
-      return () => clearTimeout(debounceTimer);
-    } else {
-      setRoomStatus("");
-    }
-  }, [roomCode]);
 
   const handleJoinRoom = () => {
     if (!roomCode.trim()) {
@@ -52,11 +22,10 @@ export default function AuthScreen() {
       return;
     }
     
-    const finalRoomCode = roomCode.toUpperCase();
     setIsJoining(true);
     
     setTimeout(() => {
-      navigate(`/room/${finalRoomCode}`);
+      navigate(`/room/${roomCode}`);
       setIsJoining(false);
     }, 800);
   };
@@ -139,17 +108,10 @@ export default function AuthScreen() {
             <Input
               id="roomCode"
               value={roomCode}
-              onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
+              onChange={(e) => setRoomCode(e.target.value)}
               className="bg-slate-800 border-slate-600 focus:border-blue-400 focus:bg-slate-700 text-white placeholder:text-slate-400"
               placeholder="Enter room code to join"
-              maxLength={10}
             />
-            {roomStatus && (
-              <p className="text-xs text-slate-400 mt-1 flex items-center gap-1">
-                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                {roomStatus}
-              </p>
-            )}
           </div>
           
           <div className="space-y-3">

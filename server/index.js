@@ -24,48 +24,8 @@ app.get('/', (req, res) => {
   res.json({ status: 'OK', message: 'CodeSphere backend is running', timestamp: new Date() });
 });
 
-// Room info endpoint
-app.get('/room/:roomId', (req, res) => {
-  const { roomId } = req.params;
-  const room = rooms.get(roomId);
-  
-  if (room) {
-    res.json({
-      exists: true,
-      roomId: room.id,
-      userCount: room.users.size,
-      users: Array.from(room.users.values()).map(u => ({ name: u.name, id: u.id })),
-      createdAt: room.createdAt,
-      lastActivity: room.lastActivity
-    });
-  } else {
-    res.json({
-      exists: false,
-      roomId: roomId,
-      message: 'Room will be created when you join'
-    });
-  }
-});
-
-// Store room data with persistent state
+// Store room data
 const rooms = new Map();
-
-// Helper function to create or get room
-const getOrCreateRoom = (roomId) => {
-  if (!rooms.has(roomId)) {
-    rooms.set(roomId, {
-      id: roomId,
-      users: new Map(),
-      code: 'public class Main {\n    public static void main(String[] args) {\n        System.out.println("Hello, CodeSphere!");\n    }\n}',
-      language: 'java',
-      whiteboard: [], // Store whiteboard state
-      createdAt: new Date(),
-      lastActivity: new Date()
-    });
-    console.log(`Room ${roomId} created`);
-  }
-  return rooms.get(roomId);
-};
 
 // WebSocket connection handling
 io.on('connection', (socket) => {
@@ -73,42 +33,28 @@ io.on('connection', (socket) => {
 
   socket.on('join-room', (data) => {
     const { roomId, user } = data;
-    console.log(`User ${user.name} joining room ${roomId}`);
-    
     socket.join(roomId);
     
-    // Get or create room
-    const room = getOrCreateRoom(roomId);
-    room.lastActivity = new Date();
+    if (!rooms.has(roomId)) {
+      rooms.set(roomId, {
+        users: new Map(),
+        code: 'public class Main {\n    public static void main(String[] args) {\n        System.out.println("Hello, CodeSphere!");\n    }\n}',
+        language: 'java'
+      });
+    }
     
-    // Add user to room
-    const userWithSocket = { ...user, socketId: socket.id, joinedAt: new Date() };
-    room.users.set(socket.id, userWithSocket);
-    
-    console.log(`Room ${roomId} now has ${room.users.size} users`);
+    const room = rooms.get(roomId);
+    room.users.set(socket.id, { ...user, socketId: socket.id });
     
     // Send current room state to new user
     socket.emit('room-state', {
-      roomId: room.id,
       code: room.code,
       language: room.language,
-      users: Array.from(room.users.values()),
-      userCount: room.users.size
+      users: Array.from(room.users.values())
     });
     
     // Notify others about new user
-    socket.to(roomId).emit('user-joined', {
-      user: userWithSocket,
-      userCount: room.users.size,
-      message: `${user.name} joined the room`
-    });
-    
-    // Send room info to all users
-    io.to(roomId).emit('room-info', {
-      roomId: room.id,
-      userCount: room.users.size,
-      users: Array.from(room.users.values()).map(u => ({ name: u.name, id: u.id }))
-    });
+    socket.to(roomId).emit('user-joined', user);
   });
 
   socket.on('code-change', (data) => {
@@ -149,39 +95,12 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => {
     console.log('User disconnected:', socket.id);
-    
-    // Remove user from all rooms and notify others
+    // Remove user from all rooms
     rooms.forEach((room, roomId) => {
       if (room.users.has(socket.id)) {
         const user = room.users.get(socket.id);
         room.users.delete(socket.id);
-        room.lastActivity = new Date();
-        
-        console.log(`User ${user.name} left room ${roomId}. Remaining users: ${room.users.size}`);
-        
-        // Notify remaining users
-        socket.to(roomId).emit('user-left', {
-          user: user,
-          userCount: room.users.size,
-          message: `${user.name} left the room`
-        });
-        
-        // Send updated room info
-        socket.to(roomId).emit('room-info', {
-          roomId: room.id,
-          userCount: room.users.size,
-          users: Array.from(room.users.values()).map(u => ({ name: u.name, id: u.id }))
-        });
-        
-        // Clean up empty rooms after 5 minutes of inactivity
-        if (room.users.size === 0) {
-          setTimeout(() => {
-            if (rooms.has(roomId) && rooms.get(roomId).users.size === 0) {
-              console.log(`Cleaning up empty room ${roomId}`);
-              rooms.delete(roomId);
-            }
-          }, 5 * 60 * 1000); // 5 minutes
-        }
+        socket.to(roomId).emit('user-left', user);
       }
     });
   });
