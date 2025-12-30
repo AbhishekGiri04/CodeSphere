@@ -156,15 +156,15 @@ CodeSphere is a comprehensive collaborative coding platform designed for modern 
 ```
 CodeSphere/
 ├── 📂 docs/                         # 📸 Screenshots and documentation
-│   ├── 📄 LoadingPage.png           # ⏳ Loading screen interface
-│   ├── 📄 SignIn.png                # 🔑 Authentication page
-│   ├── 📄 HomePage.png              # 🏠 Home page interface
-│   ├── 📄 CodeSection.png           # 💻 Code editor section
-│   ├── 📄 Web_WhiteBoard.png        # 🎨 Web whiteboard functionality
-│   ├── 📄 Terminal.png              # ⚡ Code execution terminal
+│   ├── 📄 CodeSection.png           # 💻 Code editor interface
 │   ├── 📄 DarkMode.png              # 🌙 Dark mode interface
 │   ├── 📄 Desktop_CodeSphere.png    # 🖥️ Desktop application
-│   └── 📄 Desktop_WhiteBoard.png    # 🎨 Desktop whiteboard
+│   ├── 📄 Desktop_WhiteBoard.png    # 🎨 Desktop whiteboard
+│   ├── 📄 HomePage.png              # 🏠 Home page interface
+│   ├── 📄 LoadingPage.png           # ⏳ Loading screen interface
+│   ├── 📄 SignIn.png                # 🔑 Authentication page
+│   ├── 📄 Terminal.png              # ⚡ Code execution terminal
+│   └── 📄 Web_WhiteBoard.png        # 🎨 Web whiteboard functionality
 ├── 📂 server/                       # 🔧 Node.js backend service
 │   ├── 📄 index.js                  # 🚀 Express server with Socket.IO
 │   ├── 📄 package.json              # 📦 Server dependencies
@@ -172,22 +172,6 @@ CodeSphere/
 ├── 📂 src/                          # 🎨 React frontend application
 │   ├── 📂 components/               # 🧩 Reusable UI components
 │   │   ├── 📂 ui/                   # 🎯 shadcn/ui component library
-│   │   │   ├── 📄 alert.tsx              # 🚨 Alert components
-│   │   │   ├── 📄 button.tsx             # 🔘 Button components
-│   │   │   ├── 📄 card.tsx               # 📋 Card components
-│   │   │   ├── 📄 dialog.tsx             # 💬 Dialog components
-│   │   │   ├── 📄 input.tsx              # 📝 Input components
-│   │   │   ├── 📄 label.tsx              # 🏷️ Label components
-│   │   │   ├── 📄 scroll-area.tsx        # 📜 Scroll area components
-│   │   │   ├── 📄 select.tsx             # 📋 Select components
-│   │   │   ├── 📄 separator.tsx          # ➖ Separator components
-│   │   │   ├── 📄 sheet.tsx              # 📄 Sheet components
-│   │   │   ├── 📄 skeleton.tsx           # 💀 Loading skeleton
-│   │   │   ├── 📄 sonner.tsx             # 🔔 Toast notifications
-│   │   │   ├── 📄 toast.tsx              # 🍞 Toast components
-│   │   │   ├── 📄 toaster.tsx            # 🔔 Toast container
-│   │   │   ├── 📄 toggle.tsx             # 🔄 Toggle components
-│   │   │   └── 📄 tooltip.tsx            # 💡 Tooltip components
 │   │   ├── 📄 AuthScreen.tsx        # 🔑 Authentication interface
 │   │   ├── 📄 ChatSidebar.tsx       # 💬 Real-time chat interface
 │   │   ├── 📄 EditorToolbar.tsx     # 🛠️ Editor controls and tools
@@ -211,9 +195,9 @@ CodeSphere/
 │   ├── 📂 lib/                      # 🛠️ Utility functions
 │   │   ├── 📄 firebase.ts           # 🔥 Firebase configuration
 │   │   └── 📄 utils.ts              # 🔧 Helper functions
-│   ├── 📂 main/java/                # ☕ Java desktop application
-│   │   └── 📂 com/codesphere/       # 📦 Java package structure
-│   │       └── 📄 CodeSphereSwing.java # 🖥️ Desktop application
+│   ├── 📂 main/java/                # ☕ Java desktop application source
+│   │   └── 📂 com/codesphere/swing/ # 📦 Swing desktop app package
+│   │       └── 📄 CodeSphereSwing.java # 🖥️ Desktop application main class
 │   ├── 📂 pages/                    # 📄 Main application pages
 │   │   ├── 📄 Index.tsx             # 🏠 Landing and room creation
 │   │   ├── 📄 Room.tsx              # 🏠 Collaborative workspace
@@ -223,13 +207,14 @@ CodeSphere/
 │   ├── 📄 index.css                 # 🎨 Base styles
 │   ├── 📄 main.tsx                  # 🚀 Application entry point
 │   └── 📄 vite-env.d.ts             # 🔧 Vite type definitions
-├── 📂 target/                       # 📦 Java compiled classes
-│   ├── 📂 classes/                  # 🏗️ Compiled Java bytecode
-│   ├── 📂 generated-sources/        # 🔄 Generated source files
-│   └── 📂 maven-status/             # 📊 Maven build status
+├── 📂 target/                       # 📦 Java compiled classes (auto-generated)
+│   └── 📂 classes/                  # 🏗️ Compiled Java bytecode
+├── 📄 codesphere-desktop.jar        # 🚀 Executable desktop application
+├── 📄 build-desktop.sh              # 🔨 Desktop build script
+├── 📄 start-swing.sh                # 🖥️ Desktop application launcher
 ├── 📄 package.json                  # 📦 Frontend dependencies
 ├── 📄 package-lock.json             # 🔒 Dependency lock file
-├── 📄 pom.xml                       # ☕ Maven configuration
+├── 📄 pom.xml                       # ☕ Maven configuration for Java
 ├── 📄 vite.config.ts                # ⚙️ Vite build configuration
 ├── 📄 tailwind.config.ts            # 🎨 Tailwind CSS configuration
 ├── 📄 components.json               # 🧩 shadcn/ui configuration
@@ -240,8 +225,6 @@ CodeSphere/
 ├── 📄 postcss.config.js             # 🎨 PostCSS configuration
 ├── 📄 vercel.json                   # 🚀 Vercel deployment config
 ├── 📄 index.html                    # 🌐 HTML template
-├── 📄 run.sh                        # 🌐 Web application startup
-├── 📄 start-swing.sh                # 🖥️ Desktop application startup
 ├── 📄 .env                          # 🔐 Environment variables (local)
 ├── 📄 .env.example                  # 🔧 Environment variables template
 ├── 📄 .gitignore                    # 🚫 Git ignore rules
@@ -266,6 +249,8 @@ CodeSphere/
 
 ### 🚀 Quick Start
 
+#### 🌐 **Web Version (Recommended)**
+
 1. **Clone the repository:**
 
    ```bash
@@ -273,52 +258,75 @@ CodeSphere/
    cd CodeSphere
    ```
 
-2. **Configure environment:**
+2. **Install dependencies:**
+
+   ```bash
+   # Frontend dependencies
+   npm install
+   
+   # Backend dependencies
+   cd server
+   npm install
+   cd ..
+   ```
+
+3. **Configure environment (optional):**
 
    ```bash
    cp .env.example .env
    # Add your Firebase configuration to .env file
    ```
 
-3. **Start web application:**
+4. **Start web application:**
 
    ```bash
-   chmod +x run.sh
-   ./run.sh
+   ./start-web.sh
    ```
 
-4. **Start desktop application:**
-
-   ```bash
-   chmod +x start-swing.sh
-   ./start-swing.sh
-   ```
-
-5. **Access the applications:**
+5. **Access the application:**
 
    ```
    Web App: http://localhost:8080
    Backend: http://localhost:3001
-   Desktop: Java Swing GUI
    ```
 
-### 🔧 Environment Setup
+#### 🖥️ **Desktop Version**
 
-Create `.env` file in root directory:
+1. **Build desktop application:**
 
-```env
-# Firebase Configuration
-VITE_FIREBASE_API_KEY=your_api_key_here
-VITE_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
-VITE_FIREBASE_PROJECT_ID=your_project_id
-VITE_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
-VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
-VITE_FIREBASE_APP_ID=your_app_id
-VITE_FIREBASE_MEASUREMENT_ID=your_measurement_id
+   ```bash
+   ./build-desktop.sh
+   ```
 
-# Server Configuration
-PORT=3001
-NODE_ENV=development
+2. **Run desktop application:**
+
+   ```bash
+   ./start-swing.sh
+   ```
+
+   **Or run JAR directly:**
+   ```bash
+   java -cp codesphere-desktop.jar com.codesphere.swing.CodeSphereSwing
+   ```
+
+### 💻 Development Commands
+
+```bash
+# Web Development
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run lint         # Code linting
+npm run preview      # Preview production build
+
+# Desktop Development
+./build-desktop.sh   # Build JAR file
+./start-swing.sh     # Run desktop app
+mvn clean compile    # Compile Java code only
+
+# Server Development
+cd server
+npm start            # Start backend server
+npm run dev          # Start with nodemon
 ```
 <br>
 
