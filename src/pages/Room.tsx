@@ -36,57 +36,39 @@ export default function Room() {
       return;
     }
     
-    // Try to join room with WebSocket
+    // Join room with WebSocket
     if (typeof joinRoom === 'function') {
+      console.log('Joining room:', roomIdParam, currentUser);
       joinRoom(roomIdParam, currentUser);
     } else {
       setRoomId(roomIdParam);
     }
     
-    // Simulate connecting to the room
-    const connectToRoom = () => {
-      setConnected(false);
-      
-      setTimeout(() => {
-        setConnected(true);
-        if (!hasShownConnectedToast.current) {
-          toast.success(`Connected to room: ${roomIdParam}`, {
-            description: `Room code: ${roomIdParam.toUpperCase()}`,
-          });
-          hasShownConnectedToast.current = true;
-        }
-        
-        // Automatically hide the connection status overlay after connection
-        setTimeout(() => {
-          setShowConnectionStatus(false);
-        }, 1000); 
-      }, 1000);
-    };
-    
-    connectToRoom();
-    
-    // Simulate periodic connection check and auto-reconnect
-    const connectionTimer = setInterval(() => {
-      if (!connected) {
-        setConnectionAttempts(prev => prev + 1);
-        if (connectionAttempts < 3) {
-          connectToRoom();
-        } else {
-          toast.error("Failed to connect. Please try again.");
-          navigate("/");
-        }
-      }
-    }, 5000);
-    
     return () => {
       setRoomId(null);
-      setConnected(false);
-      clearInterval(connectionTimer);
       hasShownConnectedToast.current = false;
     };
-  }, [roomIdParam, currentUser]);
+  }, [roomIdParam, currentUser, joinRoom, setRoomId, navigate]);
   
-  // Show loading state without taking over the entire screen
+  // Auto-hide loading screen after 3 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowConnectionStatus(false);
+    }, 3000);
+    
+    return () => clearTimeout(timer);
+  }, []);
+  useEffect(() => {
+    if (connected && !hasShownConnectedToast.current) {
+      toast.success(`Connected to room: ${roomIdParam}`, {
+        description: `Room code: ${roomIdParam?.toUpperCase()}`,
+      });
+      hasShownConnectedToast.current = true;
+      setShowConnectionStatus(false);
+    }
+  }, [connected, roomIdParam]);
+  
+  // Show loading state only briefly
   if (!connected && showConnectionStatus) {
     return (
       <div className="min-h-screen flex flex-col bg-background">
@@ -100,7 +82,7 @@ export default function Room() {
               onClick={() => setShowConnectionStatus(false)}
               className="mt-4 text-sm text-blue-500 hover:underline"
             >
-              Skip waiting
+              Continue anyway
             </button>
           </div>
         </div>
