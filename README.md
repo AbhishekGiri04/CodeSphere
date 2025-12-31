@@ -16,8 +16,24 @@
 
 ---
 
-## 📖 Project Overview
-CodeSphere is a comprehensive collaborative coding platform designed for modern development teams. It combines real-time code editing, visual collaboration tools, and instant code execution in both web and desktop environments. Built with React and Java Swing, it provides seamless collaboration experiences for remote teams, coding interviews, and educational purposes.
+## 📖 Problem Statement
+
+In the modern software development landscape, remote collaboration and real-time code sharing are essential for distributed teams. Traditional code editors lack real-time collaboration features, making pair programming, code reviews, and technical interviews challenging. Existing solutions often compromise on performance, user experience, or feature completeness.
+
+<br>
+
+---
+
+## 💡 Our Solution
+
+CodeSphere is a comprehensive collaborative coding platform built to:
+
+- 👥 Enable **real-time collaborative editing** with cursor tracking and user presence
+- 🎨 Provide **interactive whiteboard** for visual explanations and system design
+- ⚡ Support **multi-language code execution** (Java, Python, JavaScript, C++)
+- 💬 Facilitate **team communication** with built-in chat and @mentions
+- 🏠 Organize collaboration through **room-based sessions** with unique codes
+- 🖥️ Offer **dual platform support** - web application and desktop Java Swing version
 
 <br>
 
@@ -490,12 +506,13 @@ Desktop App:  Java Swing GUI
 
 <br>
 
----  
 
-## 📞 Help & Contact  
+---
 
-> 💬 *Got questions or need assistance with CodeSphere Platform?*  
-> We're here to help with technical support and collaboration!
+## 📞 Help & Contact
+
+> 💬 *Got questions or need assistance with CineMorph Component?*  
+> We're here to help with integration and customization!
 
 <div align="center">
 
@@ -514,16 +531,19 @@ Desktop App:  Java Swing GUI
 
 ---
 
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+<br/>
+
+---
+
+
 **🚀 Built with ❤️ for Collaborative Coding**  
 *CodeSphere: Transforming Remote Development Through Real-Time Collaboration*
 
 </div>
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
