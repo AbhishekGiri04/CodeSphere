@@ -225,6 +225,7 @@ CodeSphere/
 ├── 📄 postcss.config.js             # 🎨 PostCSS configuration
 ├── 📄 vercel.json                   # 🚀 Vercel deployment config
 ├── 📄 index.html                    # 🌐 HTML template
+├── 📄 LICENSE                       # 📄 MIT License file
 ├── 📄 .env                          # 🔐 Environment variables (local)
 ├── 📄 .env.example                  # 🔧 Environment variables template
 ├── 📄 .gitignore                    # 🚫 Git ignore rules
@@ -517,6 +518,12 @@ Desktop App:  Java Swing GUI
 *CodeSphere: Transforming Remote Development Through Real-Time Collaboration*
 
 </div>
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
